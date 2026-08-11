@@ -1,0 +1,17 @@
+[
+  {
+    "title": "The romance of the classic red rose",
+    "body": "Roses have long symbolized love and passion, with their layered petals and rich fragrance making them the centerpiece of romantic bouquets for centuries.",
+    "correct_image_filename": "rose_01.jpg"
+  },
+  {
+    "title": "Why peonies are a spring garden favorite",
+    "body": "Peonies bloom in late spring with lush, ruffled petals in soft pinks and whites, prized by gardeners for their full, rounded blossoms.",
+    "correct_image_filename": "peony_01.jpg"
+  },
+  {
+    "title": "Sunflowers and how they track the sun",
+    "body": "Sunflowers are known for heliotropism, tilting their large yellow heads to follow the sun's path across the sky throughout the day.",
+    "correct_image_filename": "sunflower_01.jpg"
+  }
+]

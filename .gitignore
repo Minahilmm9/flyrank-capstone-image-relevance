@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+data/app.db
+data/corpus/*.jpg
+data/corpus/*.jpeg
+data/corpus/*.png
+!data/corpus/.gitkeep
+.pytest_cache/
+*.egg-info/

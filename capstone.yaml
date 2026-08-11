@@ -1,0 +1,25 @@
+name: flyrank-capstone-image-relevance
+description: AI Image Matching Engine — vision classification, semantic matching, and a mismatch guard.
+
+run: |
+  cp .env.example .env   # then fill in GEMINI_API_KEY
+  pip install -r requirements.txt --break-system-packages
+  uvicorn app.main:app --reload
+
+seed: |
+  python scripts/download_corpus.py
+  curl -X POST http://localhost:8000/images/batch-process
+
+test: pytest
+
+base_url: http://localhost:8000
+
+endpoints:
+  - POST /images/batch-process     # Probe 1: run vision batch job over corpus
+  - GET  /images                   # list processed images + tags
+  - GET  /images/costs/summary     # Probe 6: per-call cost tracking
+  - POST /posts                    # create a post (embeds it)
+  - GET  /posts/{id}/images        # Probes 2-4: ranked + guarded suggestions
+  - GET  /review/pending           # suggestions awaiting approval
+  - POST /review/{suggestion_id}   # approve/reject a suggestion
+  - GET  /review/{suggestion_id}/why  # inspect why a suggestion was accepted/rejected
