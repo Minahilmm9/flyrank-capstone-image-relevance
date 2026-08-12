@@ -31,3 +31,9 @@ Why attributes are excluded from the subject match: they're too generic (shared 
 Why there's a fallback vision model: a model I was using got retired by Google mid-project with no warning beyond a limit: 0 quota error.
 
 the corpus was expanded from 5 to 50 images via the Unsplash API, and the eval script was fixed to grade by category instead of exact filename (since ~10 images per category means multiple correct answers exist). Be honest that AI helped write these scripts — that's exactly what the brief asks for.
+
+Corpus expansion — 5 images to 50 AI wrote scripts/expand_corpus.py to pull additional licensed images per category from the free Unsplash API, since hand-picking 45 individual stock photo URLs wasn't practical. I ran it myself with my own Unsplash key.
+
+Growing the corpus broke the old eval script: run_eval.py was checking for one exact filename per post (e.g. rose_01.jpg), which only worked when there was exactly one image per category. With ~10 images per category, any correctly-tagged image in the right category is a valid top-1 pick — so the eval script was comparing the wrong thing. Caught by rerunning eval after the expansion: precision dropped to 17% (1/6) even though the guard was picking correct-category images every time (rose_05.jpg instead of rose_01.jpg, etc). Fixed by grading on category instead of exact filename.
+
+Final result on the full 50-image corpus: pytest 10/10 passing, batch job 49/50 images tagged (1 flagged as failed rather than guessed), eval script 100% (6/6) top-1 precision, cost log shows every vision/embedding call attributed.
