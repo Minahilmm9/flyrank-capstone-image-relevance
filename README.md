@@ -59,13 +59,16 @@ All 10 tests pass, offline and deterministic.
 python scripts/run_eval.py
 ```
 
-**Top-1 precision: 100% (6/6)** — measured against the full 50-image
-corpus. The eval set covers one post per category plus a "no confident
-match" case (an unrelated post the guard correctly rejects). Ground truth
-is checked at the category level: with ~10 images per category, any
-correctly-tagged image in the right category is a valid top-1 pick, so
-`run_eval.py` compares the predicted category rather than one arbitrary
-filename.
+**Top-1 precision: 100% (7/7)** — measured against the full 50-image
+corpus. The eval set covers one post per category, a "no confident match"
+case (an unrelated post the guard correctly rejects), and one semantic-
+matching case: a post describing a daisy ("low-growing rosettes,"
+"Bellis perennis") without ever using the word "daisy" — the system still
+correctly matched it to a daisy image, proving matching works on meaning,
+not keyword overlap. Ground truth is checked at the category level: with
+~10 images per category, any correctly-tagged image in the right category
+is a valid top-1 pick, so `run_eval.py` compares the predicted category
+rather than one arbitrary filename.
 
 ## Limitations
 

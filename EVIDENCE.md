@@ -7,7 +7,7 @@ One proof per Definition-of-Done checkbox (§ 6 of the brief).
 - [x] Vision model produces structured output validated against a schema
   - Proof: `pytest tests/test_schema_validation.py -v` → all 4 tests PASSED
 - [x] Low-confidence classifications are flagged instead of accepted
-  - Proof: `app/vision.py` sets `low_confidence_flag` based on the confidence threshold; verified by `pytest tests/test_guard.py::test_low_confidence_rejected_even_if_similar` → PASSED
+  - Proof: `app/vision.py` sets `low_confidence_flag` based on the confidence threshold; verified by `pytest tests/test_guard.py::test_low_confidence_rejected_even_if_similar` → PASSED. (On the actual 50-image corpus, `low_confidence: 0` — every real photo was tagged with high confidence, so the flag never fired live; the mechanism itself is exercised by the unit test above.)
 - [x] Images processed through a batch background job with retries
   - Proof: `POST /images/batch-process` (run against the full 50-image corpus) →
 ```json
@@ -27,17 +27,18 @@ One proof per Definition-of-Done checkbox (§ 6 of the brief).
   - Proof: `python scripts/run_eval.py` against the live server returned ranked, guard-evaluated results for every eval post — e.g. the rose post's top accepted suggestion was `rose_05.jpg`, the peony post's was `peony_05.jpg`, each drawn from embeddings stored on 49 processed images (see full run below).
 - [x] Semantic matching works for equivalent concepts
   - Proof: `python scripts/run_eval.py` →
-
   [OK] 'The romance of the classic red rose' -> top1=rose_05.jpg expected_category=rose
 [OK] 'Why peonies are a spring garden favorite' -> top1=peony_05.jpg expected_category=peony
 [OK] 'Sunflowers and how they track the sun' -> top1=sunflower_03.jpg expected_category=sunflower
 [OK] 'Growing tulips from bulbs this fall' -> top1=tulip_07.jpg expected_category=tulip
 [OK] 'The humble daisy in cottage gardens' -> top1=daisy_04.jpg expected_category=daisy
 [OK] 'Five budgeting tips for freelancers' -> top1=None expected_category=None
+[OK] 'A humble lawn favorite blooms again' -> top1=daisy_04.jpg expected_category=daisy
 
-Top-1 precision: 100% (6/6)
+Top-1 precision: 100% (7/7)
+The last case is the key proof of *semantic* (not keyword) matching: the post text never uses the word "daisy" — it only describes "low-growing rosettes," "white ray florets," and the scientific name "Bellis perennis" — yet the system still correctly matched it to a daisy image, directly mirroring the brief's "red fox" / "Vulpes vulpes" example.
 
-Ground truth is checked at category level (e.g. any of the 10 rose images is a valid top-1 pick, not one fixed filename) — see `scripts/run_eval.py`.
+    Ground truth is checked at category level (e.g. any of the 10 rose images is a valid top-1 pick, not one fixed filename) — see `scripts/run_eval.py`.
 
 ## Safety Layer
 
@@ -60,6 +61,6 @@ Ground truth is checked at category level (e.g. any of the 10 rose images is a v
 ## Quality & Documentation
 
 - [x] Labeled eval dataset measures top-1 precision; number is in README
-  - Proof: `Top-1 precision: 100% (6/6)` — in README.md, measured against the full 50-image corpus
+  - Proof: `Top-1 precision: 100% (7/7)` — in README.md, measured against the full 50-image corpus
 - [x] README with architecture explanation + submission-pack files present
-  - Proof: README.md, capstone.yaml, BUILDLOG.md, EVIDENCE.md, .env.example all in repo root
+  - Proof: README.md, capstone.yaml, BUILDLOG.md, EVIDENCE.md, .env.example, LICENSE all in repo root
