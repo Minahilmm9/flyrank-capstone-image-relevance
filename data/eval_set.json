@@ -13,5 +13,20 @@
     "title": "Sunflowers and how they track the sun",
     "body": "Sunflowers are known for heliotropism, tilting their large yellow heads to follow the sun's path across the sky throughout the day.",
     "correct_image_filename": "sunflower_01.jpg"
+  },
+  {
+    "title": "Growing tulips from bulbs this fall",
+    "body": "Tulip bulbs should be planted in autumn for a colorful spring display, with cup-shaped blooms in reds, yellows, and purples.",
+    "correct_image_filename": "tulip_01.jpg"
+  },
+  {
+    "title": "The humble daisy in cottage gardens",
+    "body": "Daisies are simple, cheerful flowers with white petals surrounding a yellow center, often naturalized in lawns and cottage-style borders.",
+    "correct_image_filename": "daisy_01.jpg"
+  },
+  {
+    "title": "Five budgeting tips for freelancers",
+    "body": "Freelance income is unpredictable, so setting aside a percentage of every invoice, tracking quarterly taxes, and building a cash buffer are essential habits.",
+    "correct_image_filename": null
   }
 ]

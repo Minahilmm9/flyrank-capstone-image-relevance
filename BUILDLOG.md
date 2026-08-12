@@ -29,3 +29,5 @@ Why the guard checks confidence, similarity, and subject/category separately rat
 Why attributes are excluded from the subject match: they're too generic (shared across genuinely different subjects) and caused a real false-positive I found and fixed.
 
 Why there's a fallback vision model: a model I was using got retired by Google mid-project with no warning beyond a limit: 0 quota error.
+
+the corpus was expanded from 5 to 50 images via the Unsplash API, and the eval script was fixed to grade by category instead of exact filename (since ~10 images per category means multiple correct answers exist). Be honest that AI helped write these scripts — that's exactly what the brief asks for.

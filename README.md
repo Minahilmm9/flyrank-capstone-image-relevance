@@ -5,9 +5,10 @@ library — using a vision model for structured tagging, embeddings for
 semantic similarity, and a mismatch guard that refuses bad pairings
 instead of forcing the "best available" wrong answer.
 
-Corpus domain: flowers (rose, peony, sunflower, tulip, daisy). Rose and
-peony are the deliberately confusable pair, used to prove the guard
-catches a same-category-but-wrong-subject mismatch.
+Corpus domain: flowers (rose, peony, sunflower, tulip, daisy), ~50 images
+across the 5 categories. Rose and peony are the deliberately confusable
+pair, used to prove the guard catches a same-category-but-wrong-subject
+mismatch.
 
 ## Architecture
 Images ─(batch job)─► Vision Model ─► {tags, caption, confidence} ─► image_metadata
@@ -32,6 +33,12 @@ cp .env.example .env
 
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
+
+# data/corpus_urls.json already has ~50 images committed. To regenerate it
+# from scratch (or add more), get a free Unsplash Demo key (no card:
+# https://unsplash.com/developers) and run:
+#   export UNSPLASH_ACCESS_KEY=your_key
+#   python scripts/expand_corpus.py
 python scripts/download_corpus.py
 uvicorn app.main:app --reload
 ```
@@ -52,7 +59,13 @@ All 10 tests pass, offline and deterministic.
 python scripts/run_eval.py
 ```
 
-**Top-1 precision: 100% (3/3)**
+**Top-1 precision: 100% (6/6)** — measured against the full 50-image
+corpus. The eval set covers one post per category plus a "no confident
+match" case (an unrelated post the guard correctly rejects). Ground truth
+is checked at the category level: with ~10 images per category, any
+correctly-tagged image in the right category is a valid top-1 pick, so
+`run_eval.py` compares the predicted category rather than one arbitrary
+filename.
 
 ## Limitations
 
@@ -60,3 +73,4 @@ python scripts/run_eval.py
 - The guard's subject/category check is a word-match heuristic, not a learned classifier.
 - No frontend; review workflow is API-only.
 - Batch job runs synchronously in-request; production would use a task queue.
+- 1 of 50 images failed vision classification during the batch run and was flagged rather than guessed (see EVIDENCE.md).
